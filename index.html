@@ -102,6 +102,62 @@
   .nav { position: fixed; top: 0; bottom: 0; width: 18%; z-index: 4; background: none; border: 0; cursor: pointer; }
   #prev { left: 0; } #next { right: 0; }
 
+  /* Phones and narrow windows: stack the slides as one scrolling page instead of scaling the 16:9 stage */
+  @media screen and (max-width: 820px) {
+    html, body { height: auto; overflow: auto; }
+    #viewport { position: static; display: block; }
+    #stage { width: 100%; height: auto; transform: none !important; }
+    .slide, .slide.active { display: flex; position: relative; inset: auto; padding: 56px 24px; }
+    #progress, .nav { display: none; }
+
+    h1 { font-size: 46px; }
+    h2 { font-size: 30px; line-height: 1.18; }
+    p, li { font-size: 17px; }
+
+    .title { min-height: 100svh; }
+    .title .mark { margin-bottom: 28px; }
+    .title .sub { font-size: 19px; margin-top: 20px; }
+    .title .meta { flex-direction: column; gap: 6px; margin-top: 56px; font-size: 15px; }
+
+    .two { grid-template-columns: 1fr; gap: 24px; margin-top: 24px; }
+    .heard-list li { flex-direction: column; gap: 4px; padding: 16px 0; }
+    .heard-list b { min-width: 0; }
+    .heard-list li span { font-size: 17px; }
+
+    .outcomes { grid-template-columns: 1fr; gap: 32px; margin-top: 36px; }
+    .outcomes h3 { font-size: 24px; margin: 14px 0 8px; }
+
+    .journey { margin-top: 32px; }
+    .journey .line { left: 14px; right: auto; top: 0; bottom: 0; width: 2px; height: auto; }
+    .stops { grid-template-columns: 1fr; gap: 26px; }
+    .stop { display: grid; grid-template-columns: 30px 1fr; column-gap: 18px; align-items: start; }
+    .stop .dot { grid-row: 1 / span 2; }
+    .stop h4 { margin: 3px 0 4px; font-size: 18px; }
+    .stop p { font-size: 15px; }
+    .legend { margin-top: 32px; flex-wrap: wrap; gap: 14px 28px; font-size: 15px; }
+
+    .steps { grid-template-columns: 1fr; margin-top: 28px; }
+    .step, .step + .step { padding: 22px 0; border-left: 0; border-top: 1px solid rgba(244,246,245,.22); }
+    .step .when { margin-bottom: 10px; font-size: 15px; }
+    .step h3 { font-size: 28px; margin-bottom: 8px; }
+    .step p { font-size: 17px; }
+
+    .grid { grid-template-columns: 1fr; margin-top: 24px; }
+    .cell { padding: 22px 0; }
+    .cell h3 { font-size: 24px; }
+    .cell p { font-size: 17px; }
+
+    .deliv { grid-template-columns: 1fr; margin-top: 24px; }
+    .deliv div { padding: 20px 0; }
+    .deliv h3 { font-size: 19px; }
+    .deliv p { font-size: 16px; }
+
+    .next { grid-template-columns: 1fr; gap: 36px; margin-top: 28px; }
+    .next h3 { font-size: 26px; margin-bottom: 12px; }
+    .next li { font-size: 17px; }
+    .closing { margin-top: 48px; font-size: 24px; }
+  }
+
   @media print {
     @page { size: 1280px 720px; margin: 0; }
     html, body { overflow: visible; height: auto; background: none; }
