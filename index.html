@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Opportunity Audit Roadmap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* Three colors only: ink, porcelain, mint. Everything else is these at reduced opacity. */
+  :root {
+    --ink: #12262B;
+    --porcelain: #F4F6F5;
+    --mint: #5FB3A1;
+    --serif: "Inter", system-ui, sans-serif;
+    --sans: "Inter", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: var(--ink); overflow: hidden; font-family: var(--sans); }
+  #viewport { position: fixed; inset: 0; display: grid; place-items: center; }
+  #stage { width: 1280px; height: 720px; position: relative; transform-origin: center; flex: none; }
+
+  .slide { position: absolute; inset: 0; padding: 72px 96px; display: none; flex-direction: column; }
+  .slide.active { display: flex; }
+  .dark { background: var(--ink); color: var(--porcelain); }
+  .light { background: var(--porcelain); color: var(--ink); }
+
+  h1, h2 { font-family: var(--serif); font-weight: 600; letter-spacing: -0.02em; line-height: 1.12; }
+  h1 { font-size: 92px; line-height: 1.05; }
+  h2 { font-size: 46px; max-width: 1088px; }
+  p, li { font-size: 22px; line-height: 1.5; }
+  .muted { opacity: .68; }
+  .small { font-size: 17px; }
+  .rule { height: 1px; background: currentColor; opacity: .22; }
+
+  /* 1 title */
+  .title { justify-content: space-between; }
+  .title .sub { font-size: 26px; opacity: .8; max-width: 640px; margin-top: 28px; }
+  .title .meta { display: flex; justify-content: space-between; font-size: 18px; opacity: .7; }
+  .title .mark { width: 72px; height: 6px; background: var(--mint); margin-bottom: 36px; }
+
+  /* 2 heard */
+  .two { display: grid; grid-template-columns: 5fr 6fr; gap: 80px; margin-top: 40px; flex: 1; }
+  .heard-list { list-style: none; }
+  .heard-list li { padding: 15px 0; border-top: 1px solid rgba(18,38,43,.2); display: flex; gap: 20px; }
+  .heard-list li:last-child { border-bottom: 1px solid rgba(18,38,43,.2); }
+  .heard-list b { font-weight: 600; min-width: 170px; }
+  .heard-list li span { font-size: 20px; line-height: 1.45; }
+
+  /* 3 goal */
+  .outcomes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 56px; margin-top: auto; }
+  .outcomes h3 { font-family: var(--serif); font-weight: 600; letter-spacing: -0.015em; font-size: 28px; margin: 18px 0 12px; }
+  .outcomes .bar { height: 4px; width: 48px; background: var(--mint); }
+
+  /* 4 journey */
+  .journey { margin-top: 120px; position: relative; flex: 1; }
+  .line { position: absolute; left: 0; right: 0; top: 14px; height: 2px; background: var(--ink); opacity: .25; }
+  .stops { display: grid; grid-template-columns: repeat(7, 1fr); gap: 14px; position: relative; }
+  .dot { width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--ink); background: var(--porcelain); }
+  .dot.pri { background: var(--mint); border-color: var(--mint); }
+  .stop h4 { font-size: 21px; font-weight: 600; margin: 24px 0 10px; line-height: 1.25; }
+  .stop p { font-size: 17px; line-height: 1.45; opacity: .7; }
+  .legend { display: flex; gap: 36px; font-size: 17px; align-items: center; margin-top: auto; }
+  .legend span { display: inline-flex; gap: 12px; align-items: center; }
+  .legend i { width: 16px; height: 16px; border-radius: 50%; display: inline-block; border: 2px solid var(--ink); }
+  .legend i.pri { background: var(--mint); border-color: var(--mint); }
+
+  /* 5 process */
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 90px; }
+  .step { padding: 0 32px 0 0; }
+  .step + .step { padding-left: 32px; border-left: 1px solid rgba(244,246,245,.22); }
+  .step .when { font-size: 17px; color: var(--mint); font-weight: 600; margin-bottom: 18px; }
+  .step h3 { font-family: var(--serif); font-weight: 600; letter-spacing: -0.015em; font-size: 34px; margin-bottom: 16px; }
+  .step p { font-size: 21px; opacity: .78; }
+
+  /* 6 review grid */
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 64px; row-gap: 0; margin-top: 56px; flex: 1; align-content: start; }
+  .cell { padding: 44px 0; border-top: 1px solid rgba(18,38,43,.2); }
+  .cell h3 { font-family: var(--serif); font-weight: 600; letter-spacing: -0.015em; font-size: 28px; margin-bottom: 12px; }
+  .cell p { font-size: 20px; opacity: .72; }
+
+  /* 7 deliverables */
+  .deliv { margin-top: 48px; flex: 1; display: grid; grid-template-columns: 1fr 1fr; column-gap: 80px; align-content: start; }
+  .deliv div { display: flex; gap: 22px; padding: 30px 0; border-top: 1px solid rgba(244,246,245,.22); }
+  .deliv b { color: var(--mint); font-weight: 600; font-size: 20px; min-width: 24px; }
+  .deliv h3 { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+  .deliv p { font-size: 17px; opacity: .72; }
+
+  /* 8 next */
+  .next { display: grid; grid-template-columns: 1fr 1fr; gap: 96px; margin-top: 56px; flex: 1; }
+  .next h3 { font-family: var(--serif); font-weight: 600; letter-spacing: -0.015em; font-size: 30px; margin-bottom: 20px; }
+  .next ul { list-style: none; }
+  .next li { padding: 14px 0; border-top: 1px solid rgba(18,38,43,.2); font-size: 20px; }
+  .closing { margin-top: auto; font-family: var(--serif); font-weight: 600; letter-spacing: -0.015em; font-size: 28px; }
+
+  /* chrome */
+  #progress { position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 5; }
+  #progress button { width: 8px; height: 8px; border-radius: 50%; border: 0; background: var(--porcelain); opacity: .35; cursor: pointer; }
+  #progress button[aria-current="true"] { opacity: 1; background: var(--mint); }
+  button:focus-visible { outline: 2px solid var(--mint); outline-offset: 3px; }
+  .nav { position: fixed; top: 0; bottom: 0; width: 18%; z-index: 4; background: none; border: 0; cursor: pointer; }
+  #prev { left: 0; } #next { right: 0; }
+
+  @media print {
+    @page { size: 1280px 720px; margin: 0; }
+    html, body { overflow: visible; height: auto; background: none; }
+    #viewport { position: static; display: block; }
+    #stage { transform: none !important; height: auto; }
+    .slide { display: flex !important; position: relative; width: 1280px; height: 720px; break-after: page; }
+    #progress, .nav { display: none; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<div id="viewport">
+<main id="stage">
+
+  <!-- 1 -->
+  <section class="slide dark title active" aria-label="Title">
+    <div>
+      <div class="mark"></div>
+      <h1>AI Opportunity<br>Audit</h1>
+      <p class="sub">Our roadmap for finding where AI and automation can give SHAMS Beauty Clinic its time back.</p>
+    </div>
+    <div class="meta"><span>Prepared for SHAMS Beauty Clinic</span><span>Mohammad Qawasmi &nbsp;|&nbsp; October 2026</span></div>
+  </section>
+
+  <!-- 2 -->
+  <section class="slide light" aria-label="What we heard">
+    <h2>You told us the clinic runs on people, and there is no time left to improve it.</h2>
+    <div class="two">
+      <p class="muted" style="max-width:420px">Thank you for the time in our first meeting. This is what we took away, so you can correct anything we got wrong.</p>
+      <ul class="heard-list">
+        <li><b>How it runs</b><span>A small team: you, a specialist, a visiting male specialist and two people on social media.</span></li>
+        <li><b>How patients arrive</b><span>Instagram, referrals and occasional ad campaigns.</span></li>
+        <li><b>What is manual</b><span>Appointments, consent forms, payments and follow-ups.</span></li>
+        <li><b>What you want</b><span>Feedback, follow-ups, bookings, lead inquiries and digital patient forms.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="slide dark" aria-label="Goal">
+    <h2>The audit answers one question: where should the clinic invest effort first?</h2>
+    <div class="outcomes">
+      <div><div class="bar"></div><h3>Time back</h3><p class="muted">Hours your team spends on repeat tasks, moved to patients and treatments.</p></div>
+      <div><div class="bar"></div><h3>Fewer missed patients</h3><p class="muted">Inquiries, no-shows and follow-ups that today depend on someone remembering.</p></div>
+      <div><div class="bar"></div><h3>A plan you can act on</h3><p class="muted">A ranked list with effort and cost, so every decision is yours to make.</p></div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="slide light" aria-label="Audit scope">
+    <h2>We will follow a patient from first message to repeat visit.</h2>
+    <div class="journey">
+      <div class="line"></div>
+      <div class="stops">
+        <div class="stop"><div class="dot pri"></div><h4>Inquiry</h4><p>Instagram, ads, referrals, messages</p></div>
+        <div class="stop"><div class="dot pri"></div><h4>Booking</h4><p>Scheduling, reminders, changes</p></div>
+        <div class="stop"><div class="dot pri"></div><h4>Pre-visit forms</h4><p>Patient details and consent</p></div>
+        <div class="stop"><div class="dot pri"></div><h4>Treatment record</h4><p>Notes before and after each session</p></div>
+        <div class="stop"><div class="dot"></div><h4>Payment</h4><p>Invoices, packages, receipts</p></div>
+        <div class="stop"><div class="dot pri"></div><h4>Follow-up</h4><p>Check-ins, no-shows, rebooking</p></div>
+        <div class="stop"><div class="dot pri"></div><h4>Feedback</h4><p>Reviews and referrals</p></div>
+      </div>
+    </div>
+    <div class="legend"><span><i class="pri"></i>Your priority areas</span><span><i></i>Also in scope</span></div>
+  </section>
+
+  <!-- 5 -->
+  <section class="slide dark" aria-label="Process">
+    <h2>Two weeks, four steps, and very little of your time.</h2>
+    <div class="steps">
+      <div class="step"><div class="when">Days 1 to 3</div><h3>Listen</h3><p>Short interviews with you, both specialists and the social media team. We also watch a normal clinic day.</p></div>
+      <div class="step"><div class="when">Days 3 to 7</div><h3>Map</h3><p>We draw how work really flows and review your CRM and the tools around it.</p></div>
+      <div class="step"><div class="when">Days 6 to 9</div><h3>Score</h3><p>Each opportunity is rated by impact and effort, with a check on patient data and consent.</p></div>
+      <div class="step"><div class="when">Days 10 to 12</div><h3>Present</h3><p>We walk you through the findings, the quick wins and the roadmap.</p></div>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="slide light" aria-label="What we review">
+    <h2>Six areas we will look at.</h2>
+    <div class="grid">
+      <div class="cell"><h3>People</h3><p>Who does what, and where time is lost during a day.</p></div>
+      <div class="cell"><h3>Processes</h3><p>Booking, consent, payment, follow-up and no-show handling.</p></div>
+      <div class="cell"><h3>Your CRM and tools</h3><p>What it already does, what it misses and what it connects to.</p></div>
+      <div class="cell"><h3>Patient data</h3><p>Where records live, how clean they are and who can see them.</p></div>
+      <div class="cell"><h3>Channels</h3><p>How Instagram, ads and referrals turn into booked patients.</p></div>
+      <div class="cell"><h3>Privacy and consent</h3><p>That any change respects patient trust and local rules.</p></div>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="slide dark" aria-label="Deliverables">
+    <h2>What you will have at the end.</h2>
+    <div class="deliv">
+      <div><b>1</b><span><h3>Process map</h3><p>One page showing how a patient moves through the clinic today.</p></span></div>
+      <div><b>2</b><span><h3>Ranked opportunities</h3><p>Every idea scored by impact and effort.</p></span></div>
+      <div><b>3</b><span><h3>Quick wins</h3><p>Improvements that can start within 30 days.</p></span></div>
+      <div><b>4</b><span><h3>90-day roadmap</h3><p>What to do, in what order, and who does it.</p></span></div>
+      <div><b>5</b><span><h3>Cost and return estimate</h3><p>Expected time saved and cost for each step.</p></span></div>
+      <div><b>6</b><span><h3>Tool recommendations</h3><p>Use what you have, buy, or build, with reasons.</p></span></div>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section class="slide light" aria-label="Next steps">
+    <h2>What we need from you to begin.</h2>
+    <div class="next">
+      <div>
+        <h3>From the clinic</h3>
+        <ul>
+          <li>Access to your CRM</li>
+          <li>About two hours per team member for interviews</li>
+          <li>Samples of your forms and common patient messages</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Next steps</h3>
+        <ul>
+          <li>You confirm this roadmap and the start date</li>
+          <li>We schedule interviews around treatment hours</li>
+          <li>Audit begins, with a short update each week</li>
+        </ul>
+      </div>
+    </div>
+    <p class="closing">Thank you for the trust. We look forward to starting.</p>
+  </section>
+
+</main>
+</div>
+
+<button class="nav" id="prev" aria-label="Previous slide"></button>
+<button class="nav" id="next" aria-label="Next slide"></button>
+<div id="progress" role="tablist" aria-label="Slides"></div>
+
+<script>
+  const slides = [...document.querySelectorAll('.slide')];
+  const stage = document.getElementById('stage');
+  const prog = document.getElementById('progress');
+  let i = 0;
+
+  slides.forEach((_, n) => {
+    const b = document.createElement('button');
+    b.setAttribute('aria-label', 'Go to slide ' + (n + 1));
+    b.onclick = () => go(n);
+    prog.appendChild(b);
+  });
+
+  function go(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach((s, k) => s.classList.toggle('active', k === i));
+    [...prog.children].forEach((b, k) => k === i ? b.setAttribute('aria-current', 'true') : b.removeAttribute('aria-current'));
+    try { history.replaceState(null, '', '#' + (i + 1)); } catch (e) {}
+  }
+  function fit() {
+    const s = Math.min(innerWidth / 1280, innerHeight / 720);
+    stage.style.transform = 'scale(' + s + ')';
+  }
+  document.getElementById('prev').onclick = () => go(i - 1);
+  document.getElementById('next').onclick = () => go(i + 1);
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); go(i + 1); }
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); go(i - 1); }
+    if (e.key === 'Home') go(0);
+    if (e.key === 'End') go(slides.length - 1);
+  });
+  let x0 = null;
+  addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
+  addEventListener('touchend', e => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 40) go(i + (dx < 0 ? 1 : -1));
+    x0 = null;
+  });
+  addEventListener('resize', fit);
+  fit();
+  go((parseInt(location.hash.slice(1), 10) || 1) - 1);
+</script>
+</body>
+</html>
